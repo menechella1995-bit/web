@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { 
@@ -20,7 +20,7 @@ import {
   ExternalLink
 } from 'lucide-react';
 
-export default function DashboardPage() {
+function DashboardContent() {
   const searchParams = useSearchParams();
   const isAdminParam = searchParams.get('admin') === 'true';
 
@@ -292,5 +292,17 @@ export default function DashboardPage() {
         NicoXedits Studio © 2026
       </div>
     </div>
+  );
+}
+
+export default function DashboardPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="animate-spin text-zinc-600" size={48} />
+      </div>
+    }>
+      <DashboardContent />
+    </Suspense>
   );
 }
