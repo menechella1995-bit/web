@@ -1,197 +1,144 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { 
-  ShieldCheck, 
-  MessageCircle,
-  Search,
-  ChevronDown,
-  Receipt,
-  Upload,
-  CheckCircle2
-} from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import Navbar from "@/components/ui/Navbar";
+import GlobalSearch from "@/components/ui/GlobalSearch";
+import AnatomyAI from "@/components/ui/AnatomyAI";
+import MuscleCard from "@/components/anatomy/MuscleCard";
+import BoneCard from "@/components/anatomy/BoneCard";
+import { muscles, bones } from "@/data/anatomyData";
+import { BookOpen, User, Activity, Info, ArrowRight } from "lucide-react";
+import Link from "next/link";
 
-export default function LandingPage() {
-  const whatsappNumber = "2246439602";
-  const [receiptFile, setReceiptFile] = useState<File | null>(null);
-  const [showReceiptUI, setShowReceiptUI] = useState(false);
-
-  const services = [
-    { title: "REELS / TIKTOK", price: "$6.000", desc: "Edición dinámica con subtítulos, efectos y música viral." },
-    { title: "YOUTUBE VIDEO", price: "$15.000", desc: "Storytelling, cortes precisos y corrección de color profesional." },
-    { title: "CONTENIDO MASTER", price: "CONSULTAR", desc: "Producciones completas, comerciales y videos corporativos." },
-  ];
-
-  const handleWhatsAppReceipt = () => {
-    if (!receiptFile) return;
-    const message = encodeURIComponent("🚀 ¡Hola Nico! Acabo de subir mi comprobante de pago a la web. Te lo adjunto por aquí también.");
-    window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
-  };
-
+export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen text-white violet-gradient-bg">
-      
-      {/* --- MINIMAL NAVIGATION --- */}
-      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-12 py-8 bg-transparent">
-        <div className="flex items-center gap-2">
-          <div className="w-5 h-5 border-2 border-white rounded-full"></div>
-          <span className="text-sm font-bold tracking-[0.2em] uppercase">NICOXEDITS</span>
-        </div>
+    <div className="min-h-screen bg-emerald-50 text-gray-900 selection:bg-emerald-200">
+      <Navbar />
 
-        <div className="flex items-center gap-6">
-          <Link 
-            href="/dashboard" 
-            className="px-6 py-2 border border-white/30 rounded-full text-[10px] font-bold tracking-widest uppercase hover:bg-white hover:text-black transition-all"
-          >
-            Portafolios
-          </Link>
-          <button 
-            onClick={() => window.location.href = '/dashboard?admin=true'}
-            className="p-2 opacity-20 hover:opacity-100 transition-opacity text-white"
-            title="Admin"
-          >
-            <ShieldCheck size={16} />
-          </button>
-        </div>
-      </nav>
-      
-      {/* --- HERO SECTION --- */}
-      <section className="relative flex flex-col items-center justify-center min-h-screen p-6 text-center">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          className="max-w-5xl space-y-6"
-        >
-          <h1 className="text-5xl md:text-7xl font-light tracking-[0.1em] uppercase welcome-text leading-tight text-glow">
-            BIENVENIDO A <br className="hidden md:block" /> <span className="font-bold">NICOXEDITS!</span>
-          </h1>
+      {/* Hero Section */}
+      <section className="relative bg-emerald-900 text-white py-32 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-800 to-transparent opacity-50" />
+        <div className="max-w-7xl mx-auto px-4 relative z-10 text-center space-y-12">
+          <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 px-4 py-2 rounded-full text-sm font-medium backdrop-blur-sm animate-bounce-slow">
+            <Activity className="w-4 h-4 text-emerald-300" />
+            <span>Guía Profesional de Anatomía y Masaje</span>
+          </div>
           
-          <p className="text-sm md:text-base text-white/60 max-w-xl mx-auto leading-relaxed font-light tracking-wide">
-            Transformando tus ideas en experiencias cinematográficas de alto impacto con edición de video profesional.
-          </p>
-
-          <div className="flex flex-wrap justify-center gap-4 pt-12">
-            <Link 
-              href="/send" 
-              className="btn-minimal"
-            >
-              SUBIR VIDEO
-            </Link>
-            <Link 
-              href="/dashboard" 
-              className="btn-minimal !bg-white/10 !text-white hover:!bg-white/20 border border-white/10"
-            >
-              PORTAFOLIO
-            </Link>
-            <button 
-              onClick={() => setShowReceiptUI(!showReceiptUI)} 
-              className={`btn-minimal transition-all ${showReceiptUI ? '!bg-white !text-black scale-105' : '!bg-white/10 !text-white hover:!bg-white/20'}`}
-            >
-              ENVIAR COMPROBANTE DE PAGO
-            </button>
-            <a 
-              href="mailto:menechella1995@gmail.com" 
-              className="btn-minimal !bg-transparent border border-white/30 hover:!bg-white/10"
-            >
-              CONTÁCTANOS
-            </a>
+          <div className="space-y-6">
+            <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-none uppercase">
+              Descubre la <span className="text-emerald-400">fuerza</span> del movimiento
+            </h1>
+            <p className="text-lg md:text-2xl text-emerald-100 max-w-3xl mx-auto leading-relaxed font-medium opacity-80">
+              Aprende sobre el sistema musculoesquelético y las técnicas de masaje profesional para el bienestar físico.
+            </p>
           </div>
 
-          {/* --- MINIMAL RECEIPT UPLOAD (Appears when clicking TRANSFERIR) --- */}
-          <AnimatePresence>
-            {showReceiptUI && (
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                className="pt-12 w-full max-w-md mx-auto"
-              >
-                <div 
-                  className={`relative group border-2 border-dashed rounded-[2rem] p-8 transition-all cursor-pointer ${receiptFile ? 'border-green-500/50 bg-green-500/5' : 'border-white/10 hover:border-white/20 bg-white/5'}`}
-                  onClick={() => document.getElementById('receipt-upload-main')?.click()}
-                >
-                  <input 
-                    id="receipt-upload-main" 
-                    type="file" 
-                    className="hidden" 
-                    accept="image/*,.pdf"
-                    onChange={(e) => setReceiptFile(e.target.files?.[0] || null)}
-                  />
-                  
-                  <div className="flex flex-col items-center gap-4">
-                    {receiptFile ? (
-                      <div className="w-12 h-12 bg-green-500 text-black rounded-full flex items-center justify-center animate-bounce">
-                        <CheckCircle2 size={24} />
-                      </div>
-                    ) : (
-                      <div className="w-12 h-12 bg-white/5 text-white/40 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <Receipt size={24} />
-                      </div>
-                    )}
-                    <div>
-                      <p className="text-xs font-black uppercase tracking-widest text-white">
-                        {receiptFile ? receiptFile.name : 'Subir Comprobante'}
-                      </p>
-                      <p className="text-[10px] text-white/40 mt-1 uppercase tracking-widest">Click para seleccionar archivo</p>
-                    </div>
-                  </div>
-                </div>
+          <GlobalSearch />
 
-                {receiptFile && (
-                  <motion.button 
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    onClick={handleWhatsAppReceipt}
-                    className="w-full mt-4 py-4 bg-green-500 text-white font-black uppercase tracking-widest rounded-2xl text-[10px] shadow-2xl flex items-center justify-center gap-2 hover:scale-105 transition-all"
-                  >
-                    <MessageCircle size={16} fill="currentColor" />
-                    Enviar a Nico por WhatsApp
-                  </motion.button>
-                )}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.div>
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 opacity-20">
-          <ChevronDown size={24} className="animate-bounce" />
-        </div>
-      </section>
-
-      {/* --- SERVICES SECTION --- */}
-      <section className="py-24 px-6 max-w-7xl mx-auto w-full">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {services.map((service, idx) => (
-            <motion.div 
-              key={idx}
-              whileHover={{ y: -10 }}
-              className="bg-white/5 border border-white/10 p-10 rounded-[2.5rem] space-y-6 hover:bg-white/10 transition-all text-center group shadow-2xl backdrop-blur-sm"
+          <div className="flex flex-wrap gap-4 justify-center pt-8">
+            <Link
+              href="/muscles"
+              className="bg-emerald-500 hover:bg-emerald-400 text-emerald-950 px-10 py-5 rounded-3xl font-black text-xl transition-all hover:scale-105 active:scale-95 shadow-2xl shadow-emerald-900/40 flex items-center gap-3"
             >
-              <div className="inline-block px-3 py-1 rounded-full bg-white/10 text-[10px] font-black tracking-widest text-white/40 uppercase group-hover:text-white transition-colors">
-                {service.price}
-              </div>
-              <h3 className="text-2xl font-black italic tracking-tight uppercase italic">{service.title}</h3>
-              <p className="text-xs text-white/40 font-medium leading-relaxed uppercase tracking-wider">
-                {service.desc}
-              </p>
-            </motion.div>
-          ))}
+              Explorar Músculos
+              <ArrowRight className="w-6 h-6" />
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* --- FLOATING ELEMENTS --- */}
-      <a 
-        href={`https://wa.me/${whatsappNumber}`}
-        target="_blank"
-        className="fixed bottom-10 right-10 w-14 h-14 bg-green-500 text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-all z-50"
-      >
-        <MessageCircle size={28} fill="currentColor" />
-      </a>
+      {/* Anatomy AI Button (Floating) */}
+      <AnatomyAI />
 
+      {/* Quick Access Grid */}
+      <section className="py-24 max-w-7xl mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="bg-white p-8 rounded-3xl border border-emerald-100 shadow-xl shadow-emerald-900/5 hover:border-emerald-500/20 transition-all group">
+            <div className="bg-emerald-100 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <User className="w-8 h-8 text-emerald-600" />
+            </div>
+            <h3 className="text-xl font-bold mb-4">Sistema Muscular</h3>
+            <p className="text-gray-500 text-sm leading-relaxed mb-6">
+              Estudio detallado de los músculos, su origen, inserción y acción en el cuerpo.
+            </p>
+            <Link href="/muscles" className="text-emerald-600 font-bold flex items-center gap-2 hover:gap-3 transition-all">
+              Ver catálogo <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          <div className="bg-white p-8 rounded-3xl border border-emerald-100 shadow-xl shadow-emerald-900/5 hover:border-emerald-500/20 transition-all group">
+            <div className="bg-emerald-100 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <BookOpen className="w-8 h-8 text-emerald-600" />
+            </div>
+            <h3 className="text-xl font-bold mb-4">Sistema Óseo</h3>
+            <p className="text-gray-500 text-sm leading-relaxed mb-6">
+              Conoce los huesos y su función estructural en el soporte del movimiento.
+            </p>
+            <Link href="/bones" className="text-emerald-600 font-bold flex items-center gap-2 hover:gap-3 transition-all">
+              Ver catálogo <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          <div className="bg-white p-8 rounded-3xl border border-emerald-100 shadow-xl shadow-emerald-900/5 hover:border-emerald-500/20 transition-all group">
+            <div className="bg-emerald-100 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <Activity className="w-8 h-8 text-emerald-600" />
+            </div>
+            <h3 className="text-xl font-bold mb-4">Movimientos</h3>
+            <p className="text-gray-500 text-sm leading-relaxed mb-6">
+              Biomecánica aplicada: flexión, extensión, rotación y mucho más.
+            </p>
+            <Link href="/movements" className="text-emerald-600 font-bold flex items-center gap-2 hover:gap-3 transition-all">
+              Ver catálogo <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          <div className="bg-white p-8 rounded-3xl border border-emerald-100 shadow-xl shadow-emerald-900/5 hover:border-emerald-500/20 transition-all group">
+            <div className="bg-emerald-100 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <Info className="w-8 h-8 text-emerald-600" />
+            </div>
+            <h3 className="text-xl font-bold mb-4">Masaje Terapéutico</h3>
+            <p className="text-gray-500 text-sm leading-relaxed mb-6">
+              Técnicas aplicadas para aliviar dolores y mejorar la movilidad articular.
+            </p>
+            <Link href="/massage" className="text-emerald-600 font-bold flex items-center gap-2 hover:gap-3 transition-all">
+              Ver catálogo <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Anatomy Content */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+            <div className="max-w-2xl">
+              <h2 className="text-3xl md:text-4xl font-extrabold text-emerald-900 mb-4">
+                Anatomía Destacada
+              </h2>
+              <p className="text-gray-600">
+                Información técnica precisa para profesionales del masaje y entusiastas del fitness.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {muscles.map((muscle) => (
+              <MuscleCard key={muscle.id} muscle={muscle} />
+            ))}
+            {bones.map((bone) => (
+              <BoneCard key={bone.id} bone={bone} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <footer className="bg-emerald-950 text-emerald-100 py-12 border-t border-emerald-900">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <p className="font-bold text-xl mb-4">Anatomía & Masaje Profesional</p>
+          <p className="text-emerald-400 text-sm opacity-80">
+            Tu recurso educativo para el bienestar y la salud física.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
